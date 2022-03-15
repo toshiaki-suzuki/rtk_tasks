@@ -1,21 +1,21 @@
 import {createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const apiUrl = "http://localhost:8000";
+const apiUrl = "http://localhost:8000/";
 const token = localStorage.localJWT;
 
 export const fetchAsyncLogin = createAsyncThunk(
   "login/post",
   async (auth) => {
-  const res = await axios.post(
-    `${apiUrl}/authen/jwt/create`,
-    auth, 
-    {
-      headers: {
-        "Content-type": "application/json"
+    const res = await axios.post(
+      `${apiUrl}authen/jwt/create`,
+      auth, 
+      {
+        headers: {
+          "Content-type": "application/json"
+        }
       }
-    }
-  );
+    );
     return res.data;
   }
 );
@@ -23,15 +23,15 @@ export const fetchAsyncLogin = createAsyncThunk(
 export const fetchAsyncProf = createAsyncThunk(
   "login/get",
   async (auth) => {
-  const res = await axios.get(
-    `${apiUrl}/api/myself/`,
-    auth,
-    {
-      headers: {
-        Authorization: `JWT ${token}`
-      }
-    }  
-  );
+    const res = await axios.get(
+      `${apiUrl}api/myself/`,
+      auth,
+      {
+        headers: {
+          Authorization: `JWT ${token}`
+        }
+      }  
+    );
     return res.data;
   }
 );
@@ -40,7 +40,7 @@ export const fetchAsyncRegister = createAsyncThunk(
   "login/register",
   async (auth) => {
     const res = await axios.post(
-      `${apiUrl}/api/register`,
+      `${apiUrl}api/register/`,
       auth,
       {
         headers: {
@@ -71,7 +71,7 @@ export const loginSlice = createSlice({
       state.authen.username = action.payload;
     },
     editPassword(state, action) {
-      state.authen.passwored = action.payload;
+      state.authen.password = action.payload;
     },
     toggleMode(state) {
       state.isLoginView = !state.isLoginView;

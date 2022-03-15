@@ -9,8 +9,6 @@ import Login from "./features/login/Login"
 import {BrowserRouter} from "react-router-dom"
 import { Route } from 'react-router-dom/cjs/react-router-dom.min';
 
-console.log(store.getState("login"));
-
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
