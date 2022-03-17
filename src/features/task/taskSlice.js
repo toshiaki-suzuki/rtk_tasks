@@ -30,6 +30,7 @@ export const fetchAsyncUpdate = createAsyncThunk("task/put", async (task) => {
       "Content-Type": "application/json"
     }
   });
+  console.log(0);
   return res.data;
 });
 
@@ -46,14 +47,7 @@ export const fetchAsyncDelete = createAsyncThunk("task/delete", async (id) => {
 export const taskSlice = createSlice({
   name: "task",
   initialState: {
-    tasks: [
-      {
-        id: 0,
-        title: "",
-        created_at: "",
-        updated_at: "",
-      },
-    ],
+    tasks: [],
     editedTask: {
       id: 0,
       title: "",
@@ -85,20 +79,28 @@ export const taskSlice = createSlice({
     builder.addCase(fetchAsyncCreate.fulfilled, (state, action) => {
       return {
         ...state,
-        tasks: [...state ,action.payload] // stateのタスク一覧に、作成したタスクを追加した配列を取得
+        tasks: [...state.tasks, action.payload] // stateのタスク一覧に、作成したタスクを追加した配列を取得
       }
     });  
     builder.addCase(fetchAsyncUpdate.fulfilled, (state, action) => {
+      console.log(111);
       return {
         ...state,
         // 更新対象のtaskの場合は取得値（更新後の値）、それ以外は既存の値を表示
-        tasks: state.tasks.map((t) => t.id === action.payload.id ? action.payload: t) 
+        tasks: state.tasks.map((t) => {
+          console.log(t.id, action.payload.id);
+          if (t.id === action.payload.id) {
+            return action.payload;
+          } else {
+            return t;
+          }
+        }) 
       }
     });  
     builder.addCase(fetchAsyncDelete.fulfilled, (state, action) => {
       return {
         ...state,
-        tasks: state.tasks.map((t) => !t.id === action.payload.id),
+        tasks: state.tasks.filter((t) => !t.id === action.payload.id),
         selectedTask: {id:0, title:"", created_at:"", updated_at:""} 
       }
     });  
